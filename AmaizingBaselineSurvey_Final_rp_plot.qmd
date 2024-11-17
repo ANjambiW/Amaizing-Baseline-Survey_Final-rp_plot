@@ -1,0 +1,1394 @@
+---
+title: "Amaizing  Baseline Survey_Final-rp_plot"
+author: "Njambi"
+format: html
+editor: visual
+---
+
+## 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+## Clear the environment
+
+```{r}
+
+rm(list = ls())
+
+```
+
+## Loading necessary libraries
+
+```{r, include=FALSE}
+
+library(tidyverse) # includes the dplyr, ggplot2, tidyr, readr, stringr, forcats, tibble packages
+library(readxl)
+library(Hmisc)
+library(labelled)
+library(magrittr)
+library(datawizard)
+library(gtsummary)
+library(gt)
+library(kableExtra)
+library(flextable)
+library(splitstackshape)
+library(lubridate)
+library(foreign)
+library(haven)
+
+
+```
+
+## Set the working directory
+
+```{r}
+# Set working directory
+
+setwd("C:\\Users\\awanjau\\OneDrive - CGIAR\\Alliance\\Alliance_2024\\AMAZING\\AmazingBaselineDataCleaning\\Amaizing  Baseline Survey_Final-rp_plot")
+      
+```
+
+## Loading data
+
+```{r}
+# Read a csv file
+
+aMaizingBL_plot_path <- "C:\\Users\\awanjau\\OneDrive - CGIAR\\Alliance\\Alliance_2024\\AMAZING\\aMaizingBaseline_Files\\Amaizing  Baseline Survey_Final-rp_plot.csv"
+
+aMaizingBL_plot <- read_csv(aMaizingBL_plot_path)
+
+head(aMaizingBL_plot)
+```
+
+```{r}
+# Check number of rows and columns in data
+
+dim(aMaizingBL_plot)
+
+# Print column names
+
+names(aMaizingBL_plot)
+```
+
+```{r}
+class(aMaizingBL_plot$calplotindex)
+
+sort(unique(aMaizingBL_plot$calplotindex), na.last = TRUE)
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    calplotindex = as.integer(calplotindex)
+  )
+
+class(aMaizingBL_plot$calplotindex)
+unique(aMaizingBL_plot$calplotindex)
+```
+
+```{r}
+class(aMaizingBL_plot$e2)
+
+#sort(unique(aMaizingBL_plot$e2), na.last = TRUE)
+```
+
+This is plot name; left as is.
+
+```{r}
+class(aMaizingBL_plot$plotid)
+
+#sort(unique(aMaizingBL_plot$plotid), na.last = TRUE)
+```
+
+This column is the same as `e2`.\
+Left as is.
+
+```{r}
+table(aMaizingBL_plot$plotid == aMaizingBL_plot$e2)
+```
+
+Since `aMaizingBL_plot$plotid == aMaizingBL_plot$e2`, drop `plotid` and remain with `e2`.
+
+```{r}
+class(aMaizingBL_plot$e3)
+
+sort(unique(aMaizingBL_plot$e3), na.last = TRUE)
+```
+
+```{r}
+class(aMaizingBL_plot$e4)
+
+sort(unique(aMaizingBL_plot$e4), na.last = TRUE)
+```
+
+```{r}
+
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    e4 = factor(
+      e4, 
+      levels = c(1:3), 
+      labels = c("Own",	"Rented in",	"Shared in")
+    )
+  
+  ) 
+
+class(aMaizingBL_plot$e4)
+unique(aMaizingBL_plot$e4)
+```
+
+```{r}
+class(aMaizingBL_plot$e51)
+
+sort(unique(aMaizingBL_plot$e51), na.last = TRUE)
+```
+
+1 Male 2 Jointly 0 Female
+
+```{r}
+
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    e51 = factor(
+      e51, 
+      levels = c(0:2), 
+      labels = c("Female",	"Male",	"Jointly")
+    )
+  
+  ) 
+
+class(aMaizingBL_plot$e51)
+unique(aMaizingBL_plot$e51)
+```
+
+```{r}
+class(aMaizingBL_plot$e6)
+
+sort(unique(aMaizingBL_plot$e6), na.last = TRUE)
+```
+
+1 Poor 2 Medium 3 Good
+
+```{r}
+
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    e6 = factor(
+      e6, 
+      levels = c(1:3), 
+      labels = c("Poor",	"Medium",	"Good"),
+      ordered = TRUE
+    )
+  
+  ) 
+
+class(aMaizingBL_plot$e6)
+unique(aMaizingBL_plot$e6)
+```
+
+```{r}
+class(aMaizingBL_plot$e7)
+
+sort(unique(aMaizingBL_plot$e7), na.last = TRUE)
+```
+
+1 Shallow 2 Medium 3 Deep
+
+```{r}
+
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    e7 = factor(
+      e7, 
+      levels = c(1:3), 
+      labels = c("Shallow",	"Medium",	"Deep"),
+      ordered = TRUE
+    )
+  
+  ) 
+
+class(aMaizingBL_plot$e7)
+unique(aMaizingBL_plot$e7)
+```
+
+```{r}
+class(aMaizingBL_plot$e8)
+
+sort(unique(aMaizingBL_plot$e8), na.last = TRUE)
+```
+
+1 Gently slope (flat) 2 Medium slope 3 Steep Slope
+
+```{r}
+
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    e8 = factor(
+      e8, 
+      levels = c(1:3), 
+      labels = c("Gently slope (flat)",	"Medium slope",	"Steep Slope"),
+      ordered = TRUE
+    )
+  
+  ) 
+
+class(aMaizingBL_plot$e8)
+unique(aMaizingBL_plot$e8)
+```
+
+```{r}
+class(aMaizingBL_plot$e9)
+
+sort(unique(aMaizingBL_plot$e9), na.last = TRUE)
+```
+
+***Confirm unit of measurement***
+
+```{r}
+class(aMaizingBL_plot$e10)
+
+sort(unique(aMaizingBL_plot$e10), na.last = TRUE)
+```
+
+1 Yes 0 No -888 Don’t Know
+
+```{r}
+
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    e10 = factor(
+      e10, 
+      levels = c(0:1), 
+      labels = c("No", "Yes")
+    )
+  
+  ) 
+
+class(aMaizingBL_plot$e10)
+unique(aMaizingBL_plot$e10)
+```
+
+```{r}
+class(aMaizingBL_plot$e11)
+
+sort(unique(aMaizingBL_plot$e11), na.last = TRUE)
+
+# Text; multi-select column
+```
+
+```{r}
+class(aMaizingBL_plot$e11_1)
+
+sort(unique(aMaizingBL_plot$e11_1), na.last = TRUE)
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    e11_1 = as.integer(e11_1)
+  )
+
+class(aMaizingBL_plot$e11_1)
+unique(aMaizingBL_plot$e11_1)
+```
+
+```{r}
+class(aMaizingBL_plot$e11_2)
+
+sort(unique(aMaizingBL_plot$e11_2), na.last = TRUE)
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    e11_2 = as.integer(e11_2)
+  )
+
+class(aMaizingBL_plot$e11_2)
+unique(aMaizingBL_plot$e11_2)
+```
+
+```{r}
+class(aMaizingBL_plot$e11_3)
+
+sort(unique(aMaizingBL_plot$e11_3), na.last = TRUE)
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    e11_3 = as.integer(e11_3)
+  )
+
+class(aMaizingBL_plot$e11_3)
+unique(aMaizingBL_plot$e11_3)
+```
+
+```{r}
+class(aMaizingBL_plot$e11_4)
+
+sort(unique(aMaizingBL_plot$e11_4), na.last = TRUE)
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    e11_4 = as.integer(e11_4)
+  )
+
+class(aMaizingBL_plot$e11_4)
+unique(aMaizingBL_plot$e11_4)
+```
+
+```{r}
+class(aMaizingBL_plot$f7)
+
+sort(unique(aMaizingBL_plot$f7), na.last = TRUE)
+
+# Text; multi-select column
+```
+
+```{r}
+class(aMaizingBL_plot$f7_1)
+
+sort(unique(aMaizingBL_plot$f7_1), na.last = TRUE)
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    f7_1 = as.integer(f7_1)
+  )
+
+class(aMaizingBL_plot$f7_1)
+unique(aMaizingBL_plot$f7_1)
+```
+
+```{r}
+class(aMaizingBL_plot$f7_2)
+
+sort(unique(aMaizingBL_plot$f7_2), na.last = TRUE)
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    f7_2 = as.integer(f7_2)
+  )
+
+class(aMaizingBL_plot$f7_2)
+unique(aMaizingBL_plot$f7_2)
+```
+
+```{r}
+class(aMaizingBL_plot$f7_3)
+
+sort(unique(aMaizingBL_plot$f7_3), na.last = TRUE)
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    f7_3 = as.integer(f7_3)
+  )
+
+class(aMaizingBL_plot$f7_3)
+unique(aMaizingBL_plot$f7_3)
+```
+
+```{r}
+class(aMaizingBL_plot$f7_4)
+
+sort(unique(aMaizingBL_plot$f7_4), na.last = TRUE)
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    f7_4 = as.integer(f7_4)
+  )
+
+class(aMaizingBL_plot$f7_4)
+unique(aMaizingBL_plot$f7_4)
+```
+
+***Drop this column***
+
+```{r}
+class(aMaizingBL_plot$f7_5)
+
+sort(unique(aMaizingBL_plot$f7_5), na.last = TRUE)
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    f7_5 = as.integer(f7_5)
+  )
+
+class(aMaizingBL_plot$f7_5)
+unique(aMaizingBL_plot$f7_5)
+```
+
+```{r}
+class(aMaizingBL_plot$f7_6)
+
+sort(unique(aMaizingBL_plot$f7_6), na.last = TRUE)
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    f7_6 = as.integer(f7_6)
+  )
+
+class(aMaizingBL_plot$f7_6)
+unique(aMaizingBL_plot$f7_6)
+```
+
+```{r}
+class(aMaizingBL_plot$f7_7)
+
+sort(unique(aMaizingBL_plot$f7_7), na.last = TRUE)
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    f7_7 = as.integer(f7_7)
+  )
+
+class(aMaizingBL_plot$f7_7)
+unique(aMaizingBL_plot$f7_7)
+```
+
+```{r}
+class(aMaizingBL_plot$f7_8)
+
+sort(unique(aMaizingBL_plot$f7_8), na.last = TRUE)
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    f7_8 = as.integer(f7_8)
+  )
+
+class(aMaizingBL_plot$f7_8)
+unique(aMaizingBL_plot$f7_8)
+```
+
+```{r}
+class(aMaizingBL_plot$f7_9)
+
+sort(unique(aMaizingBL_plot$f7_9), na.last = TRUE)
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    f7_9 = as.integer(f7_9)
+  )
+
+class(aMaizingBL_plot$f7_9)
+unique(aMaizingBL_plot$f7_9)
+```
+
+```{r}
+class(aMaizingBL_plot$f7__666)
+
+sort(unique(aMaizingBL_plot$f7__666), na.last = TRUE)
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    f7__666 = as.integer(f7__666)
+  )
+
+class(aMaizingBL_plot$f7__666)
+unique(aMaizingBL_plot$f7__666)
+```
+
+```{r}
+class(aMaizingBL_plot$f7__222)
+
+sort(unique(aMaizingBL_plot$f7__222), na.last = TRUE)
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    f7__222 = as.integer(f7__222)
+  )
+
+class(aMaizingBL_plot$f7__222)
+unique(aMaizingBL_plot$f7__222)
+```
+
+```{r}
+class(aMaizingBL_plot$f7_sp)
+
+sort(unique(aMaizingBL_plot$f7_sp), na.last = TRUE)
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    f7_sp = case_when(
+      f7_sp %in% c("Baraka", "Mavuno") ~ "Mavuno Baraka",
+      TRUE ~ f7_sp
+    ),
+    
+    f7_sp = factor(f7_sp)
+  )
+
+class(aMaizingBL_plot$f7_sp)
+unique(aMaizingBL_plot$f7_sp)
+```
+
+```{r}
+class(aMaizingBL_plot$fertilizer_count)
+
+sort(unique(aMaizingBL_plot$fertilizer_count), na.last = TRUE)
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    fertilizer_count = as.integer(fertilizer_count)
+  )
+
+class(aMaizingBL_plot$fertilizer_count)
+unique(aMaizingBL_plot$fertilizer_count)
+```
+
+```{r}
+class(aMaizingBL_plot$`SET-OF-fertilizer`)
+
+#sort(unique(aMaizingBL_plot$`SET-OF-fertilizer`), na.last = TRUE)
+
+# ID column
+```
+
+```{r}
+class(aMaizingBL_plot$f12)
+
+sort(unique(aMaizingBL_plot$f12), na.last = TRUE)
+```
+
+```{r}
+class(aMaizingBL_plot$f13)
+
+sort(unique(aMaizingBL_plot$f13), na.last = TRUE)
+```
+
+1 liter 2 grams 3 Kilograms -222 Other, Specify
+
+```{r}
+
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    f13 = factor(
+      f13, 
+      levels = c(1:3, -222), 
+      labels = c("liter",	"grams",	"Kilograms", "Other, Specify")
+    )
+  
+  ) 
+
+class(aMaizingBL_plot$f13)
+unique(aMaizingBL_plot$f13)
+```
+
+```{r}
+class(aMaizingBL_plot$f13_sp)
+
+sort(unique(aMaizingBL_plot$f13_sp), na.last = TRUE)
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    f13_sp = case_when(
+      f13_sp %in% c("Mililitre", "Millilitres" , "Ml") ~ "milliliter", 
+      TRUE ~ f13_sp
+    )
+  )
+
+class(aMaizingBL_plot$f13_sp)
+
+sort(unique(aMaizingBL_plot$f13_sp), na.last = TRUE)
+```
+
+Drop f13_sp after replacing in f13.
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+
+    f13 = as.character(f13),
+    f13 = str_replace_all(f13, "Other, Specify",
+                                              replacement = f13_sp),
+    f13 = factor(f13)
+  )
+
+class(aMaizingBL_plot$f13)
+unique(aMaizingBL_plot$f13)
+
+```
+
+```{r}
+class(aMaizingBL_plot$f14)
+unique(aMaizingBL_plot$f14)
+```
+
+```{r}
+class(aMaizingBL_plot$f15)
+unique(aMaizingBL_plot$f15)
+```
+
+1 liter 2 grams 3 Kilograms -222 Other, Specify
+
+```{r}
+
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    f15 = factor(
+      f15, 
+      levels = c(1:3, -222), 
+      labels = c("liter",	"grams",	"Kilograms", "Other, Specify")
+    )
+  
+  ) 
+
+class(aMaizingBL_plot$f15)
+unique(aMaizingBL_plot$f15)
+```
+
+```{r}
+class(aMaizingBL_plot$f15_sp)
+unique(aMaizingBL_plot$f15_sp)
+```
+
+```{r}
+# Filter rows for which `f15_sp %in% c("50ml" , "40 millilitres")` and check corresponding entries for f14.
+
+aMaizingBL_plot %>%
+  filter(f15_sp %in% c("50ml" , "40 millilitres")) %>%
+  select(PARENT_KEY, KEY, f14, f15, f15_sp)
+
+# Mutate`f14` before replacing `f15_sp %in% c("50ml" , "40 millilitres")` with `milliliter`
+
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    f14 = case_when(
+      f15_sp %in% c("50ml" , "40 millilitres") ~ as.numeric(str_extract(f15_sp, "\\d+")) * f14, 
+      
+      TRUE ~ f14
+    )
+  )
+
+# Filter again
+
+aMaizingBL_plot %>%
+  filter(f15_sp %in% c("50ml" , "40 millilitres")) %>%
+  select(PARENT_KEY, KEY, f14, f15, f15_sp)
+
+
+# Clean f15_sp
+
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    f15_sp = case_when(
+      f15_sp %in% c("Millitres", "Millilitres", "50ml", "Milliliters", "ML", "Ml", "Mills", "Mls", "40 millilitres") ~ "milliliter", 
+      TRUE ~ f13_sp
+    )
+  )
+
+class(aMaizingBL_plot$f15_sp)
+
+sort(unique(aMaizingBL_plot$f15_sp), na.last = TRUE)
+```
+
+# Replace f15_sp in f15 and drop f15_sp
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+
+    f15 = as.character(f15),
+    f15 = str_replace_all(f15, "Other, Specify",
+                                              replacement = f15_sp),
+    f15 = factor(f15)
+  )
+
+class(aMaizingBL_plot$f15)
+unique(aMaizingBL_plot$f15)
+
+```
+
+```{r}
+class(aMaizingBL_plot$f14_fung)
+unique(aMaizingBL_plot$f14_fung)
+```
+
+```{r}
+class(aMaizingBL_plot$f15_fung)
+unique(aMaizingBL_plot$f15_fung)
+```
+
+1 liter 2 grams 3 Kilograms -222 Other, Specify
+
+```{r}
+
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    f15_fung = factor(
+      f15_fung, 
+      levels = c(1:3, -222), 
+      labels = c("liter",	"grams",	"Kilograms", "Other, Specify")
+    )
+  
+  ) 
+
+class(aMaizingBL_plot$f15_fung)
+unique(aMaizingBL_plot$f15_fung)
+```
+
+```{r}
+class(aMaizingBL_plot$f15_fung_sp)
+unique(aMaizingBL_plot$f15_fung_sp)
+```
+
+Drop `f15_fung_sp`; it is blank.
+
+```{r}
+class(aMaizingBL_plot$f20)
+unique(aMaizingBL_plot$f20)
+```
+
+1 Yes 0 No
+
+```{r}
+
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    f20 = factor(
+      f20, 
+      levels = c(0:1), 
+      labels = c("No", "Yes")
+    )
+  
+  ) 
+
+class(aMaizingBL_plot$f20)
+unique(aMaizingBL_plot$f20)
+```
+
+```{r}
+class(aMaizingBL_plot$f20_1)
+unique(aMaizingBL_plot$f20_1)
+```
+
+```{r}
+aMaizingBL_plot %>%
+  filter(f20_1 == 888.00)
+```
+
+```{r}
+class(aMaizingBL_plot$f20_2)
+sort(unique(aMaizingBL_plot$f20_2), na.last = TRUE)
+```
+
+unitmanu 1 Pickup unitmanu 2 Truck/Canter unitmanu 3 Wheelbarrow unitmanu 4 Tractor Carrier unitmanu 5 Gorogoro (2kgs) unitmanu 6 Debe (16Kgs) unitmanu 7 Bucket unitmanu 8 Kgs unitmanu -222 Other Specify
+
+```{r}
+
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    f20_2 = factor(
+      f20_2, 
+      levels = c(1:8, -222), 
+      labels = c("Pickup", "Truck/Canter", "Wheelbarrow", "Tractor Carrier", "Gorogoro (2kgs)", "Debe (16Kgs)", "Bucket", "Kgs", "Other Specify")
+    )
+  
+  ) 
+
+class(aMaizingBL_plot$f20_2)
+unique(aMaizingBL_plot$f20_2)
+```
+
+```{r}
+class(aMaizingBL_plot$f20_sp)
+unique(aMaizingBL_plot$f20_sp)
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    
+    f20_sp = case_when(
+      f20_sp %in% c("25kg bag", "25kg sacks") ~ "25Kg bag",
+      f20_sp %in% c("90 kg bag","90 kgs bag", "90 kgs gunia", "90 kg bags", "90kgs bag", "90kg", "90 kg gunia", "90kg bags", "90 kgs bags", "90kg bag", "90 kg gunias", "90kg gunias") ~ "90Kg bag",
+      f20_sp %in% c("50 kg gunias", "50kg sack", "50kgs bag", "50kg bag", "50kg bags", "50kg") ~ "50Kg bag",
+      f20_sp == "100 Kg bag" ~ "100Kg bag",
+      f20_sp %in% c("Cart", "Ox drawn cart", "Mkokoteni/cart", "Carts", "Animal drawn cart", "Animal drawn carts", "Donkey carts", "Mkokoteni", "Ox cart", "Ox carts") ~ "Animal-drawn cart",
+      f20_sp %in% c("Uteo used to carry compost leaves from under trees in compound", "Basins", "Sacks") ~ NA_character_,
+      
+      TRUE ~ f20_sp
+    )
+  )
+
+
+class(aMaizingBL_plot$f20_sp)
+unique(aMaizingBL_plot$f20_sp)
+```
+
+Drop f20_sp after replacing in f20_2.
+
+```{r}
+
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+
+    f20_2 = as.character(f20_2),
+    f20_2 = str_replace_all(f20_2, "Other Specify",
+                                              replacement = f20_sp),
+    f20_2 = factor(f20_2)
+  )
+
+class(aMaizingBL_plot$f20_2)
+unique(aMaizingBL_plot$f20_2)
+
+```
+
+```{r}
+
+class(aMaizingBL_plot$preparation_mode)
+unique(aMaizingBL_plot$preparation_mode)
+
+# Multi-select
+```
+
+```{r}
+class(aMaizingBL_plot$preparation_mode_1)
+unique(aMaizingBL_plot$preparation_mode_1)
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    preparation_mode_1 = as.integer(preparation_mode_1)
+  )
+
+class(aMaizingBL_plot$preparation_mode_1)
+unique(aMaizingBL_plot$preparation_mode_1)
+```
+
+```{r}
+class(aMaizingBL_plot$preparation_mode_2)
+unique(aMaizingBL_plot$preparation_mode_2)
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    preparation_mode_2 = as.integer(preparation_mode_2)
+  )
+
+class(aMaizingBL_plot$preparation_mode_2)
+unique(aMaizingBL_plot$preparation_mode_2)
+```
+
+```{r}
+class(aMaizingBL_plot$f17_preparation)
+unique(aMaizingBL_plot$f17_preparation)
+```
+
+Questionnaire defines it as numeric, but converted to integer during cleaning.
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    f17_preparation = as.integer(f17_preparation)
+  )
+
+class(aMaizingBL_plot$f17_preparation)
+unique(aMaizingBL_plot$f17_preparation)
+```
+
+```{r}
+class(aMaizingBL_plot$f16_preparation)
+unique(aMaizingBL_plot$f16_preparation)
+```
+
+```{r}
+class(aMaizingBL_plot$f18_preparation)
+unique(aMaizingBL_plot$f18_preparation)
+```
+
+Questionnaire defines it as numeric, but converted to integer during cleaning.
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    f18_preparation = as.integer(f18_preparation)
+  )
+
+class(aMaizingBL_plot$f18_preparation)
+unique(aMaizingBL_plot$f18_preparation)
+```
+
+```{r}
+class(aMaizingBL_plot$f19_preparation)
+unique(aMaizingBL_plot$f19_preparation)
+```
+
+```{r}
+class(aMaizingBL_plot$planting_mode)
+unique(aMaizingBL_plot$planting_mode)
+
+# Multi-select
+```
+
+```{r}
+class(aMaizingBL_plot$planting_mode_1)
+unique(aMaizingBL_plot$planting_mode_1)
+
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    planting_mode_1 = as.integer(planting_mode_1)
+  )
+
+class(aMaizingBL_plot$planting_mode_1)
+unique(aMaizingBL_plot$planting_mode_1)
+```
+
+```{r}
+class(aMaizingBL_plot$planting_mode_2)
+unique(aMaizingBL_plot$planting_mode_2)
+
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    planting_mode_2 = as.integer(planting_mode_2)
+  )
+
+class(aMaizingBL_plot$planting_mode_2)
+unique(aMaizingBL_plot$planting_mode_2)
+```
+
+```{r}
+class(aMaizingBL_plot$f16_planting)
+unique(aMaizingBL_plot$f16_planting)
+
+```
+
+```{r}
+class(aMaizingBL_plot$f18_planting)
+unique(aMaizingBL_plot$f18_planting)
+
+```
+
+Questionnaire defines it as numeric, but converted to integer during cleaning.
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    f18_planting = as.integer(f18_planting)
+  )
+
+class(aMaizingBL_plot$f18_planting)
+unique(aMaizingBL_plot$f18_planting)
+```
+
+```{r}
+class(aMaizingBL_plot$f19_planting)
+unique(aMaizingBL_plot$f19_planting)
+```
+
+```{r}
+class(aMaizingBL_plot$weeding_mode)
+unique(aMaizingBL_plot$weeding_mode)
+
+# Multi-select
+```
+
+```{r}
+class(aMaizingBL_plot$weeding_mode_1)
+unique(aMaizingBL_plot$weeding_mode_1)
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    weeding_mode_1 = as.integer(weeding_mode_1)
+  )
+
+class(aMaizingBL_plot$weeding_mode_1)
+unique(aMaizingBL_plot$weeding_mode_1)
+```
+
+```{r}
+class(aMaizingBL_plot$weeding_mode_2)
+unique(aMaizingBL_plot$weeding_mode_2)
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    weeding_mode_2 = as.integer(weeding_mode_2)
+  )
+
+class(aMaizingBL_plot$weeding_mode_2)
+unique(aMaizingBL_plot$weeding_mode_2)
+```
+
+```{r}
+class(aMaizingBL_plot$f17_weeding)
+unique(aMaizingBL_plot$f17_weeding)
+```
+
+Questionnaire defines it as numeric, but converted to integer during cleaning.
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    f17_weeding = as.integer(f17_weeding)
+  )
+
+class(aMaizingBL_plot$f17_weeding)
+unique(aMaizingBL_plot$f17_weeding)
+```
+
+```{r}
+class(aMaizingBL_plot$f16_weeding)
+unique(aMaizingBL_plot$f16_weeding)
+```
+
+```{r}
+class(aMaizingBL_plot$f18_weeding)
+unique(aMaizingBL_plot$f18_weeding)
+```
+
+Questionnaire defines it as numeric, but converted to integer during cleaning.
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    f18_weeding = as.integer(f18_weeding)
+  )
+
+class(aMaizingBL_plot$f18_weeding)
+unique(aMaizingBL_plot$f18_weeding)
+```
+
+```{r}
+class(aMaizingBL_plot$f19_weeding)
+unique(aMaizingBL_plot$f19_weeding)
+```
+
+```{r}
+class(aMaizingBL_plot$harvest_mode)
+unique(aMaizingBL_plot$harvest_mode)
+
+# Multi-select
+```
+
+```{r}
+class(aMaizingBL_plot$harvest_mode_1)
+unique(aMaizingBL_plot$harvest_mode_1)
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    harvest_mode_1 = as.integer(harvest_mode_1)
+  )
+
+class(aMaizingBL_plot$harvest_mode_1)
+unique(aMaizingBL_plot$harvest_mode_1)
+```
+
+```{r}
+class(aMaizingBL_plot$harvest_mode_2)
+unique(aMaizingBL_plot$harvest_mode_2)
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    harvest_mode_2 = as.integer(harvest_mode_2)
+  )
+
+class(aMaizingBL_plot$harvest_mode_2)
+unique(aMaizingBL_plot$harvest_mode_2)
+```
+
+```{r}
+class(aMaizingBL_plot$f16_harvesting)
+unique(aMaizingBL_plot$f16_harvesting)
+```
+
+```{r}
+class(aMaizingBL_plot$f18_harvesting)
+sort(unique(aMaizingBL_plot$f18_harvesting), na.last = TRUE)
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    f18_harvesting = as.integer(f18_harvesting)
+  )
+
+class(aMaizingBL_plot$f18_harvesting)
+sort(unique(aMaizingBL_plot$f18_harvesting), na.last = TRUE)
+```
+
+```{r}
+class(aMaizingBL_plot$f19_harvesting)
+sort(unique(aMaizingBL_plot$f19_harvesting), na.last = TRUE)
+```
+
+```{r}
+class(aMaizingBL_plot$threshing_mode)
+sort(unique(aMaizingBL_plot$threshing_mode), na.last = TRUE)
+
+# Multi-select
+```
+
+```{r}
+class(aMaizingBL_plot$threshing_mode_1)
+sort(unique(aMaizingBL_plot$threshing_mode_1), na.last = TRUE)
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    threshing_mode_1 = as.integer(threshing_mode_1)
+  )
+
+class(aMaizingBL_plot$threshing_mode_1)
+sort(unique(aMaizingBL_plot$threshing_mode_1), na.last = TRUE)
+```
+
+```{r}
+class(aMaizingBL_plot$threshing_mode_2)
+sort(unique(aMaizingBL_plot$threshing_mode_2), na.last = TRUE)
+```
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    threshing_mode_2 = as.integer(threshing_mode_2)
+  )
+
+class(aMaizingBL_plot$threshing_mode_2)
+sort(unique(aMaizingBL_plot$threshing_mode_2), na.last = TRUE)
+```
+
+```{r}
+class(aMaizingBL_plot$f16_threshing)
+sort(unique(aMaizingBL_plot$f16_threshing), na.last = TRUE)
+```
+
+```{r}
+class(aMaizingBL_plot$f18_threshing)
+sort(unique(aMaizingBL_plot$f18_threshing), na.last = TRUE)
+```
+
+Questionnaire defines it as numeric, but converted to integer during cleaning.
+
+```{r}
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  mutate(
+    f18_threshing = as.integer(f18_threshing)
+  )
+
+class(aMaizingBL_plot$f18_threshing)
+unique(aMaizingBL_plot$f18_threshing)
+```
+
+```{r}
+class(aMaizingBL_plot$f19_threshing)
+sort(unique(aMaizingBL_plot$f19_threshing), na.last = TRUE)
+```
+
+```{r}
+
+column_labels <- c(
+  
+  calplotindex = "Plot index",
+  e2 = "Plot name",
+  # plotid = "Plot name",
+  e3 = "What is the size of plotid",
+  e4 = "Ownership of plotid",
+  e51 = "Who manages plotid",
+  e6 = "Soil fertility of plotid",
+  e7 = "Soil depth of plotid",
+  e8 = "Land slope of plotid",
+  e9  = "Whats the walking distance from plotid to residence",
+  e10 = "Do you practice irrigation on plotid",
+  e11 = "Who worked on your land",
+  e11_1 = "Female household member",
+  e11_2 = "Male household member",
+  e11_3 = "Hired Labour",
+  e11_4 = "Community (Shared) Labour",
+  f7 = "Which type of fertilizer did you use in plotid?",
+  f7_1 = "CAN",
+  f7_2 = "DAP",
+  f7_3 = "NPK",
+  #f7_4 = "TSP",
+  f7_5 = "Rock Phosphate",
+  f7_6 = "Urea",
+  f7_7 = "Branded fertilizer blends (Yara)",
+  f7_8 = "Lime",
+  f7_9 = "Foliar Fertilizer",
+  f7__666 = "None of the above",
+  f7__222 = "Other Specify",
+  f7_sp = "Please Specify",
+  fertilizer_count = "Count of type of fertilizer did you use in plotid",
+  `SET-OF-fertilizer` = "Fertilizer repeat group ID",
+  f12 = "Quantity of Herbicide used  in plotid",
+  f13 = "Unit of Herbicides used  in plotid",
+  #f13_sp = "Please Specify",
+  f14 = "Quantity of Pesticide used in plotid",
+  f15 = "Unit of Pesticide used in plotid",
+  #f15_sp = "Please Specify",
+  f14_fung = "Quantity of Fungicide used in plotid",
+  f15_fung = "Unit of Fungicide used in plotid",
+  #f15_fung_sp = "Please Specify",
+  f20 = "Did you use organic manure  in plotid",
+  f20_1 = "Quantity of manure utilized in plotid",
+  f20_2 = "Unit of Manure used  in plotid",
+  #f20_sp = "Please specify the Unit",
+  preparation_mode = "Mode of land preparation?",
+  preparation_mode_1 = "Manual Land Preparation",
+  preparation_mode_2 = "Tractor or Animal drawn",
+  f17_preparation = "How many times did you carry out  Land Preparation in plotid",
+  f16_preparation = "How many days did you spend on  Land Preparation  in plotid",
+  f18_preparation = "How many were you while  Land Preparation  in plotid",
+  f19_preparation = "On average, How many hours per day did you spend on  Land Preparation  in plotid",
+  planting_mode = "Mode of Land Planting",
+  planting_mode_1 = "Manual",
+  planting_mode_2 = "Mechanized",
+  f16_planting = "How many days did you spend on  Planting  in plotid",
+  f18_planting = "How many were you while  Planting  in plotid",
+  f19_planting = "On average, How many hours per day did you spend on  Planting  in plotid",
+  weeding_mode = "Mode of Weeding",
+  weeding_mode_1 = "Manual",
+  weeding_mode_2 = "Mechanized",
+  f17_weeding = "How many times did you carry out  Weeding in plotid",
+  f16_weeding = "How many days did you spend on  Weeding  in plotid",
+  f18_weeding = "How many were you while  Weeding  in plotid",
+  f19_weeding = "On average, How many hours per day did you spend on  Weeding  in plotid",
+  harvest_mode = "Mode of Harvesting",
+  harvest_mode_1 = "Manual",
+  harvest_mode_2 = "Mechanized",
+  f16_harvesting = "How many days did you spend on  Harvesting  in plotid",
+  f18_harvesting = "How many were you while  Harvesting  in plotid",
+  f19_harvesting = "On average, How many hours per day did you spend on  Harvesting  in plotid",
+  threshing_mode = "Mode of Threshing?",
+  threshing_mode_1 = "Manual threshing",
+  threshing_mode_2 = "Mechanised Threshing",
+  f16_threshing = "How many days did you spend on  Threshing  in plotid",
+  f18_threshing = "How many were you while  Threshing  in plotid",
+  f19_threshing = "On average, How many hours per day did you spend on  Threshing  in plotid",
+  PARENT_KEY = "Parent key",
+  KEY = "Key",
+  `SET-OF-rp_plot` = "Plot repeat group ID"
+
+)
+
+```
+
+```{r}
+
+# Rename columns with characters not supported by stata
+
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  
+  rename(
+    SET_OF_fertilizer = `SET-OF-fertilizer`,
+    SET_OF_rp_plot = `SET-OF-rp_plot`
+    
+         )
+
+```
+
+```{r}
+#names(aMaizingBL_plot)
+
+aMaizingBL_plot <- aMaizingBL_plot %>%
+  select(-c(3, 21, 34, 37, 40, 44)) %>%
+  set_variable_labels(.labels = column_labels)
+
+#names(aMaizingBL_plot)
+```
+
+Using the function View() to open the new data in a spreadsheet reveals the column names and labels.
+
+```{r}
+
+#View(aMaizingBL_plot)
+
+```
+
+## Generate a data dictionary
+
+```{r}
+# Data dictionary
+
+aMaizingBL_plot_dict <- look_for(aMaizingBL_plot, labels = TRUE, values = TRUE) %>%
+  dplyr::select(-c(missing, value_labels))
+
+  gt(aMaizingBL_plot_dict)
+
+```
+
+## Export data dictionary to CSV
+
+```{r}
+
+readr::write_csv(aMaizingBL_plot_dict, "aMaizingBL_plot_dict.csv")
+
+```
+
+## Export data to CSV
+
+```{r}
+
+readr::write_csv(aMaizingBL_plot, "aMaizingBL_plot.csv")
+
+```
+
+## Save as R data
+
+```{r}
+
+save(aMaizingBL_plot, file = "aMaizingBL_plot.RData")
+```
+
+## Export data to SPSS
+
+```{r}
+
+write.foreign(aMaizingBL_plot, "aMaizingBL_plot.sav", "aMaizingBL_plot", package = "SPSS")
+
+```
+
+## Export data to STATA
+
+```{r}
+
+write_dta(aMaizingBL_plot, "aMaizingBL_plot.dta")
+
+```
